@@ -1,14 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "450mb"
-      }
-    }
-  ],
+
   "routes": [
     {
       "src": "/upload",
