@@ -107,6 +107,11 @@ def obter_textos(image, coords):
     return textos_limpos
 
 
+@app.route('/')
+def home():
+    return 'Home Page Route'
+
+
 @app.route('/upload', methods=['POST'])
 def main():
     try:
