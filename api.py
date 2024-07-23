@@ -61,7 +61,7 @@ def detect_objects(image, model, image_name):
     return results
 
 
-def draw_detections(image, results, threshold):
+def draw_detections(image, results, threshold, coords):
     for result in results:
         if result.boxes is not None:
             boxes = result.boxes.xyxy.cpu().numpy()
@@ -76,6 +76,14 @@ def draw_detections(image, results, threshold):
                                   (int(x2), int(y2)), (0, 255, 0), 2)
                     cv2.putText(image, label, (int(x1+40), int(y1+9)),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
+    for (x, y, largura, altura) in coords:
+        # Ajuste os valores conforme necessário para pegar a área ao lado dos campos preenchidos
+        margem = 10  # Margem para pegar um pouco além do campo preenchido
+        nova_x = x + largura + margem
+        nova_largura = 550  # Largura do recorte ao lado do campo preenchido
+        nova_altura = altura  # Altura igual ao campo preenchido
+
+        cv2.rectangle(image, (nova_x, y), (nova_x + nova_largura, y + nova_altura), (255, 0, 0), 2)
     return image
 
 
@@ -147,7 +155,7 @@ def main():
         print(f"Detected classes: {detected_classes}")
 
         image_with_detections = draw_detections(
-            image.copy(), results, threshold)
+            image.copy(), results, threshold, pixels_preenchidos)
 
         max_width = 1000
         max_height = 800
